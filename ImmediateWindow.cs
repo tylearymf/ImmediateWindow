@@ -73,9 +73,12 @@ public class ImmediateWindow : EditorWindow
                 options.ReferencedAssemblies.Add("System.dll");
                 options.ReferencedAssemblies.Add("System.Core.dll");
 
-                // bring in Unity assemblies
-                options.ReferencedAssemblies.Add(typeof(EditorWindow).Assembly.Location);
-                options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
+                // bring in unity libraries
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (var item in assemblies)
+                {
+                    options.ReferencedAssemblies.Add(item.Location);
+                }
 
                 // compile an assembly from our source code
                 var result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat, scriptText));
